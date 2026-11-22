@@ -1,0 +1,9 @@
+(2) PythonRDD[16] at collect at /workspace/scripts/part2_rdd.py:44 []
+ |  MapPartitionsRDD[6] at mapPartitions at PythonRDD.scala:160 []
+ |  ShuffledRDD[5] at partitionBy at <unknown>:0 []
+ +-(2) PairwiseRDD[4] at reduceByKey at /workspace/scripts/part2_rdd.py:24 []
+    |  PythonRDD[3] at reduceByKey at /workspace/scripts/part2_rdd.py:24 []
+    |  PythonRDD[2] at RDD at PythonRDD.scala:53 []
+    |      CachedPartitions: 2; MemorySize: 674.7 KiB; DiskSize: 0.0 B
+    |  s3a://lake/bronze/history/orders_history.jsonl MapPartitionsRDD[1] at textFile at <unknown>:0 []
+    |  s3a://lake/bronze/history/orders_history.jsonl HadoopRDD[0] at textFile at <unknown>:0 []

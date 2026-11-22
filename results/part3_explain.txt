@@ -1,0 +1,39 @@
+== Parsed Logical Plan ==
+'Join UsingJoin(LeftOuter, [restaurant_id])
+:- Filter (status#4 = DELIVERED)
+:  +- Relation [order_id#0,restaurant_id#1,customer_id#2,city#3,status#4,amount_mad#5,items_count#6,distance_km#7,courier_id#8,event_time#9] json
++- Project [restaurant_id#23, name#24, category#26]
+   +- Project [restaurant_id#23, name#24, city#25 AS restaurant_city#35, category#26, latitude#27, longitude#28]
+      +- Relation [restaurant_id#23,name#24,city#25,category#26,latitude#27,longitude#28] json
+
+== Analyzed Logical Plan ==
+restaurant_id: string, order_id: string, customer_id: string, city: string, status: string, amount_mad: double, items_count: int, distance_km: double, courier_id: string, event_time: timestamp, name: string, category: string
+Project [restaurant_id#1, order_id#0, customer_id#2, city#3, status#4, amount_mad#5, items_count#6, distance_km#7, courier_id#8, event_time#9, name#24, category#26]
++- Join LeftOuter, (restaurant_id#1 = restaurant_id#23)
+   :- Filter (status#4 = DELIVERED)
+   :  +- Relation [order_id#0,restaurant_id#1,customer_id#2,city#3,status#4,amount_mad#5,items_count#6,distance_km#7,courier_id#8,event_time#9] json
+   +- Project [restaurant_id#23, name#24, category#26]
+      +- Project [restaurant_id#23, name#24, city#25 AS restaurant_city#35, category#26, latitude#27, longitude#28]
+         +- Relation [restaurant_id#23,name#24,city#25,category#26,latitude#27,longitude#28] json
+
+== Optimized Logical Plan ==
+Project [restaurant_id#1, order_id#0, customer_id#2, city#3, status#4, amount_mad#5, items_count#6, distance_km#7, courier_id#8, event_time#9, name#24, category#26]
++- Join LeftOuter, (restaurant_id#1 = restaurant_id#23)
+   :- InMemoryRelation [order_id#0, restaurant_id#1, customer_id#2, city#3, status#4, amount_mad#5, items_count#6, distance_km#7, courier_id#8, event_time#9], StorageLevel(disk, memory, deserialized, 1 replicas)
+   :     +- *(1) Filter (isnotnull(status#4) AND (status#4 = DELIVERED))
+   :        +- FileScan json [order_id#0,restaurant_id#1,customer_id#2,city#3,status#4,amount_mad#5,items_count#6,distance_km#7,courier_id#8,event_time#9] Batched: false, DataFilters: [isnotnull(status#4), (status#4 = DELIVERED)], Format: JSON, Location: InMemoryFileIndex(1 paths)[s3a://lake/bronze/history/orders_history.jsonl], PartitionFilters: [], PushedFilters: [IsNotNull(status), EqualTo(status,DELIVERED)], ReadSchema: struct<order_id:string,restaurant_id:string,customer_id:string,city:string,status:string,amount_m...
+   +- Project [restaurant_id#23, name#24, category#26]
+      +- Filter isnotnull(restaurant_id#23)
+         +- Relation [restaurant_id#23,name#24,city#25,category#26,latitude#27,longitude#28] json
+
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- Project [restaurant_id#1, order_id#0, customer_id#2, city#3, status#4, amount_mad#5, items_count#6, distance_km#7, courier_id#8, event_time#9, name#24, category#26]
+   +- BroadcastHashJoin [restaurant_id#1], [restaurant_id#23], LeftOuter, BuildRight, false
+      :- InMemoryTableScan [order_id#0, restaurant_id#1, customer_id#2, city#3, status#4, amount_mad#5, items_count#6, distance_km#7, courier_id#8, event_time#9]
+      :     +- InMemoryRelation [order_id#0, restaurant_id#1, customer_id#2, city#3, status#4, amount_mad#5, items_count#6, distance_km#7, courier_id#8, event_time#9], StorageLevel(disk, memory, deserialized, 1 replicas)
+      :           +- *(1) Filter (isnotnull(status#4) AND (status#4 = DELIVERED))
+      :              +- FileScan json [order_id#0,restaurant_id#1,customer_id#2,city#3,status#4,amount_mad#5,items_count#6,distance_km#7,courier_id#8,event_time#9] Batched: false, DataFilters: [isnotnull(status#4), (status#4 = DELIVERED)], Format: JSON, Location: InMemoryFileIndex(1 paths)[s3a://lake/bronze/history/orders_history.jsonl], PartitionFilters: [], PushedFilters: [IsNotNull(status), EqualTo(status,DELIVERED)], ReadSchema: struct<order_id:string,restaurant_id:string,customer_id:string,city:string,status:string,amount_m...
+      +- BroadcastExchange HashedRelationBroadcastMode(List(input[0, string, false]),false), [plan_id=640]
+         +- Filter isnotnull(restaurant_id#23)
+            +- FileScan json [restaurant_id#23,name#24,category#26] Batched: false, DataFilters: [isnotnull(restaurant_id#23)], Format: JSON, Location: InMemoryFileIndex(1 paths)[s3a://lake/reference/restaurants.json], PartitionFilters: [], PushedFilters: [IsNotNull(restaurant_id)], ReadSchema: struct<restaurant_id:string,name:string,category:string>

@@ -1,0 +1,63 @@
+{
+  "ca_par_ville": [
+    {
+      "city": "Tanger",
+      "ca_mad": 490003.8,
+      "nb": 2539,
+      "panier_moyen": 192.99
+    },
+    {
+      "city": "Marrakech",
+      "ca_mad": 449733.29,
+      "nb": 2282,
+      "panier_moyen": 197.08
+    },
+    {
+      "city": "Fes",
+      "ca_mad": 439545.41,
+      "nb": 2225,
+      "panier_moyen": 197.55
+    },
+    {
+      "city": "Casablanca",
+      "ca_mad": 405442.81,
+      "nb": 2094,
+      "panier_moyen": 193.62
+    },
+    {
+      "city": "Rabat",
+      "ca_mad": 394270.32,
+      "nb": 2026,
+      "panier_moyen": 194.61
+    },
+    {
+      "city": "Agadir",
+      "ca_mad": 366653.72,
+      "nb": 1898,
+      "panier_moyen": 193.18
+    }
+  ],
+  "top5": [
+    [
+      "R-048",
+      85
+    ],
+    [
+      "R-078",
+      84
+    ],
+    [
+      "R-077",
+      83
+    ],
+    [
+      "R-169",
+      82
+    ],
+    [
+      "R-085",
+      82
+    ]
+  ],
+  "temps_s": 28.762
+}

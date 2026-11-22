@@ -1,0 +1,7 @@
+{
+  "part2_rdd_total_s": 28.762,
+  "part3_dataframe_ca_s": 2.778,
+  "part3_sql_ca_s": 1.351,
+  "part3_udf_s": 2.005,
+  "part3_when_otherwise_s": 0.893
+}
